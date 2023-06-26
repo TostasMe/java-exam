@@ -1,0 +1,13 @@
+<header th:insert="blocks/header :: header"></header>
+
+<div class="container mt-5 mb-5">
+  <form action="/goods/add" method="post">
+    <input type="text" name="name" placeholder="name" class="form-control"><br>
+    <input type="text" name="brand" placeholder="brand" class="form-control"><br>
+    <input type="number" name="price" placeholder="price" class="form-control"><br>
+    <input type="text" name="image" placeholder="image" class="form-control"><br>
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
