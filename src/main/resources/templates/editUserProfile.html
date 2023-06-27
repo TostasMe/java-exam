@@ -2,4 +2,12 @@
 
 <h1>edit user profile</h1>
 
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+</form>
+
+<div>
+    <img th:src="${user.image}" width="100px" height="100px">
+</div>
+
 <div th:insert="blocks/footer :: footer"></div>

@@ -22,8 +22,10 @@ public class UserProfileController {
     private UsersRepository usersRepository;
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
-    public String userList(Model model) {
-        model.addAttribute("users", usersRepository.findAll());
+    public String userList(@AuthenticationPrincipal Users user, Model model) {
+        Iterable<Users> users = usersRepository.getUsers(user.getUsername());
+        model.addAttribute("users", users);
+        model.addAttribute("currentUser", user);
         return "showUsers";
     }
 
@@ -70,13 +72,14 @@ public class UserProfileController {
     }
 
     @GetMapping("/profile")
-    public String userProfilePage(Users user, Model model) {
-        model.addAttribute("user", user);
+    public String userProfilePage(@AuthenticationPrincipal Users user, Model model) {
+        Users us = usersRepository.findByUsername(user.getUsername());
+        model.addAttribute("user", us);
         return "showUserProfile";
     }
 
     @GetMapping("/profile/edit")
-    public String userProfileEditPage(Users user, Model model) {
+    public String userProfileEditPage(@AuthenticationPrincipal Users user, Model model) {
         model.addAttribute("user", user);
         return "editUserProfile";
     }

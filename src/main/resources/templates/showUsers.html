@@ -5,10 +5,15 @@
         <p>Email: <span th:text="${user.username}"/></p>
         <p>Roles: <span th:each="roles : ${user.roles}"> <span th:text="${roles}"/>;</span></p>
 
-        <a th:href="'/user/' + ${user.id} + '/edit'" ><button class="btn btn-dark" type="submit" name="edit">edit</button></a>
-        <form method="post" th:action="'/user/' + ${user.id} + '/remove'">
-            <button class="btn btn-danger" type="submit">ban</button>
-        </form>
+        <span th:if="${user.username != currentUser.username}">
+            <a th:href="'/user/' + ${user.id} + '/edit'" ><button class="btn btn-dark" type="submit" name="edit">edit</button></a>
+            <form method="post" th:action="'/user/' + ${user.id} + '/remove'">
+                <button class="btn btn-danger" type="submit">ban</button>
+            </form>
+        </span>
+        <span th:if="${user.username == currentUser.username}">
+            <a href="/user/profile" ><button class="btn btn-dark" type="submit" name="edit">edit</button></a>
+        </span>
     </div>
 
 <div th:insert="blocks/footer :: footer"></div>
