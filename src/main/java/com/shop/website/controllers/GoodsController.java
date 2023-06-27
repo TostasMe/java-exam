@@ -1,85 +1,62 @@
 package com.shop.website.controllers;
 
 import com.shop.website.models.Goods;
-import com.shop.website.models.Users;
 import com.shop.website.repository.GoodsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.Map;
 
 @Controller
+@RequestMapping("/goods")
 public class GoodsController {
     @Autowired
     private GoodsRepository goodsRepository;
 
-    @GetMapping("/goods/add")
-    public String addGoodsPage(Model model){
-        model.addAttribute("title", "Admin Panel");
-        return "addGoods";
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/add")
+    public String addGoodsPage() {
+
+        return "addGood";
     }
 
-    @PostMapping("/goods/add")
-    public String addGoods(@RequestParam String name, @RequestParam String brand,
-                           @RequestParam String image, @RequestParam Double price, Model model){
-
-        Goods good = new Goods(name, brand, image, price);
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/add")
+    public String addGoods(Goods good) {
         goodsRepository.save(good);
-
         return "redirect:/goods/add";
     }
 
-    @GetMapping("/goods/{id}")
-    public String goodsPage(@PathVariable(value = "id") long id, Model model){
-        if(!goodsRepository.existsById(id))
-        {
-            return "redirect:/";
-        }
-        Optional<Goods> good = goodsRepository.findById(id);
-        ArrayList<Goods> result = new ArrayList<>();
-        good.ifPresent(result::add);
-        model.addAttribute("good", result);
+    @GetMapping("/{good}")
+    public String goodsPage(@PathVariable Goods good, Model model) {
+        model.addAttribute("good", good);
         return "showGoods";
     }
-
-    @GetMapping("/goods/{id}/edit")
-    public String goodsEditPage(@PathVariable(value = "id") long id, Model model){
-        if(!goodsRepository.existsById(id))
-        {
-            return "redirect:/";
-        }
-        Optional<Goods> good = goodsRepository.findById(id);
-        ArrayList<Goods> result = new ArrayList<>();
-        good.ifPresent(result::add);
-        model.addAttribute("good", result);
-        return "editGoods";
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/{good}/edit")
+    public String goodsEditPage(@PathVariable Goods good, Model model){
+        model.addAttribute("good", good);
+        return "editGood";
     }
-
-    @PostMapping("/goods/{id}/edit")
-    public String goodsEdit(@PathVariable(value = "id") long id, @RequestParam String name, @RequestParam String brand,
-                           @RequestParam String image, @RequestParam Double price, Model model){
-
-        Goods good = goodsRepository.findById(id).orElseThrow();
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/{good}/edit")
+    public String goodsEdit(@PathVariable Goods good, @RequestParam String name, @RequestParam String brand,
+                            @RequestParam String image, @RequestParam Double price){
         good.setName(name);
         good.setBrand(brand);
         good.setImage(image);
         good.setPrice(price);
+
         goodsRepository.save(good);
-
-        return "redirect:/goods/{id}";
+        return "redirect:/goods/{good}";
     }
-    @PostMapping("/goods/{id}/remove")
-    public String goodsRemove(@PathVariable(value = "id") long id, Model model){
-
-        Goods good = goodsRepository.findById(id).orElseThrow();
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/{good}/remove")
+    public String goodsRemove(@PathVariable Goods good) {
         goodsRepository.delete(good);
-
         return "redirect:/";
     }
 }

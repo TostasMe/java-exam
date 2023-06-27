@@ -5,23 +5,19 @@ import com.shop.website.models.Users;
 import com.shop.website.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
-public class UserController {
+public class UserAuthController {
     @Autowired
     private UsersRepository usersRepository;
 
     @GetMapping("/signup")
-    public String register(Model model) {
-        model.addAttribute("title", "Register");
+    public String register() {
         return "register";
     }
 

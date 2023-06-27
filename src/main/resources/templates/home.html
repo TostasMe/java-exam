@@ -4,17 +4,19 @@
     <div class="album py-5 bg-body-tertiary">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <div th:each = "element : ${goods}" class = "alert alert-dark mr-3">
-                    <a th:href="'/goods/' + ${element.id}">
-                        <img th:src="${element.image}" width="150" height="160">
-                        <h3>Name: <span th:text="${element.name}"/></h3>
-                        <p>Brand: <span th:text="${element.brand}"/></p>
-                        <p>Price: <span th:text="${element.price}"/> ₴</p>
+                <div th:each = "goods : ${goods}" class = "alert alert-dark mr-3">
+                    <a th:href="'/goods/' + ${goods.id}">
+                        <img th:src="${goods.image}" width="150" height="160">
+                        <h3>Name: <span th:text="${goods.name}"/></h3>
+                        <p>Brand: <span th:text="${goods.brand}"/></p>
+                        <p>Price: <span th:text="${goods.price}"/> ₴</p>
                     </a>
-                    <a th:href="'/goods/' + ${element.id} + '/edit'" ><button class="btn btn-dark" type="submit" name="edit">edit</button></a>
-                    <form method="post" th:action="'/goods/' + ${element.id} + '/remove'">
-                        <button class="btn btn-danger" type="submit">remove</button>
-                    </form>
+                    <span sec:authorize="hasAuthority('ADMIN')">
+                        <a th:href="'/goods/' + ${goods.id} + '/edit'" ><button class="btn btn-dark" type="submit" name="edit">edit</button></a>
+                        <form method="post" th:action="'/goods/' + ${goods.id} + '/remove'">
+                            <button class="btn btn-danger" type="submit">remove</button>
+                        </form>
+                    </span>
                 </div>
             </div>
         </div>

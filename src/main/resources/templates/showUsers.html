@@ -1,0 +1,14 @@
+<header th:insert="blocks/header :: header"></header>
+
+    <div th:each = "user : ${users}" class = "alert alert-dark mr-3">
+        <p>Name: <span th:text="${user.name}"/> <img th:src="${user.image}" width="100" height="100"></p>
+        <p>Email: <span th:text="${user.username}"/></p>
+        <p>Roles: <span th:each="roles : ${user.roles}"> <span th:text="${roles}"/>;</span></p>
+
+        <a th:href="'/user/' + ${user.id} + '/edit'" ><button class="btn btn-dark" type="submit" name="edit">edit</button></a>
+        <form method="post" th:action="'/user/' + ${user.id} + '/remove'">
+            <button class="btn btn-danger" type="submit">remove</button>
+        </form>
+    </div>
+
+<div th:insert="blocks/footer :: footer"></div>

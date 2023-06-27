@@ -1,0 +1,19 @@
+<header th:insert="blocks/header :: header"></header>
+
+<div class="container mt-5 mb-5">
+  <h1>Edit</h1>
+  <div th:each = "users : ${user}">
+    <form th:action="'/user/'+${users.id}+'/edit'" method="post">
+      <input type="hidden" th:value="${users.id}" name="id">
+      <input type="text" th:value="${users.username}" name="username" placeholder="Email" class="form-control"><br>
+      <input type="text" th:value="${users.name}" name="name" placeholder="Name" class="form-control"><br>
+      <input type="text" th:value="${users.image}" name="image" placeholder="Url" class="form-control"><br>
+      <div th:each="role : ${roles}">
+          <input th:text="${role}" type="checkbox" th:name="${role}"><br>
+      </div>
+      <button type="submit" class="btn btn-success">Update</button>
+    </form>
+  </div>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
