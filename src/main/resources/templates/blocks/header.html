@@ -18,6 +18,7 @@
             <a class="btn btn-dark me-3 link-body-emphasis text-decoration-none" href="/">Home</a>
             <span th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
                 <span th:case="${true}">
+                    <a class="btn btn-dark me-3 link-body-emphasis text-decoration-none" href="/user/profile">Profile</a>
                      <form th:action="@{/logout}" method="post">
                          <input class="btn btn-dark" type="submit" value="Sign Out"/>
                      </form>
@@ -29,8 +30,7 @@
                 </span>
 
                 <span th:case="${false}">
-                    <a class="btn btn-dark me-3 link-body-emphasis text-decoration-none" href="/signup">Register</a>
-                    <a class="btn btn-dark me-3 link-body-emphasis text-decoration-none" href="/login">Login</a>
+                    <a class="btn btn-dark me-3 link-body-emphasis text-decoration-none" href="/login">Sign In</a>
                 </span>
             </span>
         </nav>

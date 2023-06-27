@@ -1,0 +1,13 @@
+<header th:insert="blocks/header :: header"></header>
+
+<div th:each = "user : ${user}" class = "alert alert-dark mr-3">
+  <img th:src="${user.image}" width="150" height="150">
+  <h3>Name: <span th:text="${user.name}"/></h3>
+  <p>Email: <span th:text="${user.username}"/></p>
+  <p>Phone: In progress..</p>
+  <p>Address: In progress..</p>
+  <a href="/user/profile/edit" ><button class="btn btn-dark" type="submit" name="edit">Edit bio</button></a>
+  <a href="/user/profile/changepass"><button class="btn btn-dark" type="submit" name="edit">Change password</button></a>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>

@@ -7,7 +7,7 @@
 
         <a th:href="'/user/' + ${user.id} + '/edit'" ><button class="btn btn-dark" type="submit" name="edit">edit</button></a>
         <form method="post" th:action="'/user/' + ${user.id} + '/remove'">
-            <button class="btn btn-danger" type="submit">remove</button>
+            <button class="btn btn-danger" type="submit">ban</button>
         </form>
     </div>
 

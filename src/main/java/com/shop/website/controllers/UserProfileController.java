@@ -5,6 +5,7 @@ import com.shop.website.models.Users;
 import com.shop.website.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,16 +17,17 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class UserProfileController {
     @Autowired
     private UsersRepository usersRepository;
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", usersRepository.findAll());
         return "showUsers";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("{user}/edit")
     public String userEditPage(@PathVariable Users user, Model model) {
         model.addAttribute("user", user);
@@ -33,6 +35,7 @@ public class UserProfileController {
         return "editUser";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("{user}/edit")
     public String userEdit(
             @PathVariable Users user,
@@ -58,5 +61,23 @@ public class UserProfileController {
 
         usersRepository.save(user);
         return "redirect:/user";
+    }
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/{user}/remove")
+    public String userBan(@PathVariable Users user) {
+        usersRepository.delete(user);
+        return "redirect:/user";
+    }
+
+    @GetMapping("/profile")
+    public String userProfilePage(Users user, Model model) {
+        model.addAttribute("user", user);
+        return "showUserProfile";
+    }
+
+    @GetMapping("/profile/edit")
+    public String userProfileEditPage(Users user, Model model) {
+        model.addAttribute("user", user);
+        return "editUserProfile";
     }
 }
